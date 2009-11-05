@@ -1,10 +1,25 @@
-<h1>Events for next 6 months</h1>
-<% @events.each do |event| %>
-	<div style="border-bottom: solid 1px rgb(100,100,100); padding: 10px">
-		<i><%= event.calendar.category.to_s.capitalize %> > <%= event.calendar.to_s.capitalize %></i><br />
-		<strong><%= event.title %></strong><br />
-		<%= event.start_date %> - <%= event.end_date %> <%= if event.allday then "(All Day Event)" end  %><br />
-		<%= event.location %><br />
-		<%= event.description %><br />
-	</div>
-<% end %> 
+<% include_stylesheet 'admin/events' %>
+<h1><%= @status %> Events</h1>
+
+<ul id="events-nav">
+  <li><%= link_to 'Approved', approved_admin_events_path %></li>
+  <li><%= link_to 'Unapproved', unapproved_admin_events_path %></li>
+  <li><%= link_to 'All', all_admin_events_path %></li>
+</ul>
+
+<table id="events" class="index">
+  <thead>
+    <tr>
+      <th>Approve</th>
+      <th>Event Title</th>
+      <th>Description</th>
+      <th>Email</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render(:partial => 'event', :collection => @events) || %Q[<tr><td class="note" colspan="7">No events submitted.</td></tr>] %>
+  </tbody>
+</table>

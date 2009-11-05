@@ -39,7 +39,7 @@ class Ical < ActiveRecord::Base
     
     # If you were to extend this to mix in manually created event with events received from iCal subscriptions 
     # you'd need to add an Event attribute to indicate which events came from a subscription and only delete those here.
-    self.calendar.events.delete_all
+    self.calendar.events.imported.delete_all
 
     # Open file for reading, parse and store to DB
     File.open(filename, "r") do |file|

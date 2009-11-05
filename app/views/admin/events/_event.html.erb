@@ -1,0 +1,27 @@
+<tr id="event_<%= event.id %>" class="event">
+  <td>
+    <% if event.approved? %>
+      <%= link_to_remote %{<input class="approval" type="checkbox" name="event[disapprove]" checked />}, :url => disapprove_admin_event_path(event), :method => :put %>
+    <% else %>
+      <%= link_to_remote %{<input class="approval" type="checkbox" name="event[approve]" />}, :url => approve_admin_event_path(event), :method => :put %>
+    <% end %>
+  </td>
+  <td>
+    <%= event.title %>
+  </td>
+  <td>
+    <%= event.description %>
+  </td>
+  <td>
+    <%= event.email %>
+  </td>
+  <td>
+    <%= event.start_date.strftime('%b %d, %I:%M%p') %>
+  </td>
+  <td>
+    <%= event.end_date.strftime('%b %d, %I:%M%p') %>
+  </td>
+  <td>
+    <%= link_to_remote 'Delete', :url => { :action => 'destroy', :id => event.id }, :method => :delete %>
+  </td>
+</tr>

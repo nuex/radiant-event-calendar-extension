@@ -9,7 +9,7 @@ class EventCalendarExtension < Radiant::Extension
     map.namespace :admin, :path_prefix => EXT_ROOT do |cal|
       cal.resources :calendars
       cal.resources :icals, :collection => {:refresh_all => :any}, :member => {:refresh => :put}
-      cal.resources :events
+      cal.resources :events, :collection => { :approved => :get, :unapproved => :get, :all => :get }, :member => { :approve => :put, :disapprove => :put }
     end
   end
   
@@ -22,6 +22,8 @@ class EventCalendarExtension < Radiant::Extension
     EventCalendarPage
     ApplicationHelper.send :include, Admin::CalendarHelper
     Page.send :include, EventCalendarTags
+    Page.send :include, EventFormTags
+    Page.send :include, EventProcess
     UserActionObserver.instance.send :add_observer!, Calendar
     
     if Radiant::Config.table_exists? && !Radiant::Config["event_calendar.icals_path"]
@@ -39,5 +41,7 @@ class EventCalendarExtension < Radiant::Extension
       admin.tabs["Calendars"].add_link "new subscription", EXT_ROOT + "/calendars/new"
       admin.tabs["Calendars"].add_link "refresh all", EXT_ROOT + "/icals/refresh_all"
     end
+
+    admin.tabs.add "Events", EXT_ROOT + "/events", :after => "Snippets", :visibility => [:all]
   end
 end
